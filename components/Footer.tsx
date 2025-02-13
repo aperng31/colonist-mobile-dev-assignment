@@ -12,7 +12,7 @@ const Footer = ({ page, handlePreviousPage, handleNextPage }) => {
   // each right/left click should refetch, sending back current page so API knows what chunk to return
   
   return (
-    <View style={styles.footer}>
+    <View style={styles.container}>
       {<Pressable
         onPress={handlePreviousPage}
         style={styles.pressable}
@@ -20,7 +20,7 @@ const Footer = ({ page, handlePreviousPage, handleNextPage }) => {
       >
         <Octicons name="chevron-left" size={20} color="black" />
       </Pressable>}
-      <Text style={styles.footerText}>{page}</Text>
+      <Text style={styles.text}>{page}</Text>
       <Pressable
         onPress={handleNextPage}
         style={styles.pressable}
@@ -33,7 +33,7 @@ const Footer = ({ page, handlePreviousPage, handleNextPage }) => {
 };
 
 const styles = StyleSheet.create({
-  footer: {
+  container: {
     width: '100%',
     backgroundColor: '#f0f0f0',
     paddingVertical: 10,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 50 // make this a % of screen
   },
-  footerText: {
+  text: {
     fontSize: 36,
   },
   pressable: {

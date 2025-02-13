@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import UserCard from './components/UserCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Footer from './components/Footer';
+import Header from './components/Header';
 
 const PAGINATION_COUNT = 20
 
@@ -47,6 +48,7 @@ export default function App() {
         {!loading && 
           (
             <View style={styles.container}>
+              <Header />
               <FlatList
               data={paginateData(userData, page)}
               renderItem={({ item }) => <UserCard user={item} />}
