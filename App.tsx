@@ -1,13 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import UserCard from './UserCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import Footer from './Footer';
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [userData, setUserData] = useState<User[]>([])
+  const [userData, setUserData] = useState<User[]>([]);
+  const [page, setPage] = useState<number>(1);
+
   
   useEffect(() => {
     const getUsers = async () => {
@@ -24,7 +26,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         {loading && <Text>Loading...</Text>}
         {!loading && 
-          <FlatList
+          (<FlatList
             data={userData}
             renderItem={({ item }) => <UserCard user={item} />}
             keyExtractor={user => user.id}
@@ -34,7 +36,9 @@ export default function App() {
             //   <View style={{ backgroundColor: "green", height: 1 }} />
             // )}
           />
+          )
         }
+        <Footer page={page} setPage={setPage}/>
       </SafeAreaView>
     </SafeAreaProvider>
   );
