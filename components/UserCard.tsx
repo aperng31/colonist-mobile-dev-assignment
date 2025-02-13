@@ -1,6 +1,6 @@
 import React from "react"
 import { StyleSheet, View, Text } from "react-native"
-import { User } from "./App"
+import { User } from "../App"
 
 interface Props {
   user: User
@@ -10,6 +10,7 @@ const UserCard = ({ user }: Props) => {
   return (
     <View style={styles.container}>
       <Text>
+        {user.id} - 
         {user.userName} - {user.country}
       </Text>
     </View>

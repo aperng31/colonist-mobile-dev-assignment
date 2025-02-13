@@ -3,27 +3,20 @@ import { StyleSheet, View, TouchableOpacity, Pressable, Text } from "react-nativ
 import Octicons from 'react-native-vector-icons/Octicons';
 
 interface Props {
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  page: number;
+  handlePreviousPage: () => void;
+  handleNextPage: () => void;
 }
-const Footer = ({ page, setPage }) => {
+const Footer = ({ page, handlePreviousPage, handleNextPage }) => {
   // actual footer should fetch total number of elements in order to determine max num of pages
-  // each right/left click should refetch?
-  const handleNextPage = () => {
-    setPage(page + 1)
-  }
-  
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  }
+  // each right/left click should refetch, sending back current page so API knows what chunk to return
   
   return (
     <View style={styles.footer}>
       {<Pressable
         onPress={handlePreviousPage}
         style={styles.pressable}
+        disabled={page == 1}
       >
         <Octicons name="chevron-left" size={20} color="black" />
       </Pressable>}
@@ -31,6 +24,7 @@ const Footer = ({ page, setPage }) => {
       <Pressable
         onPress={handleNextPage}
         style={styles.pressable}
+        // disabled={} should disable based on if there's more page
       >
         <Octicons name="chevron-right" size={20} color="black" />
       </Pressable>

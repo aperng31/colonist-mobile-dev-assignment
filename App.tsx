@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import UserCard from './UserCard';
+import UserCard from './components/UserCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import Footer from './Footer';
+import Footer from './components/Footer';
+
+const PAGINATION_COUNT = 20
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,24 +23,44 @@ export default function App() {
     getUsers();
   }, [])
 
+  // don't need this function if fetch occurs on arrow click because all data from response would be used
+  const paginateData = (data: User[], page: number) => {
+    if (page * PAGINATION_COUNT > data.length) {
+      return data.slice((page - 1) * PAGINATION_COUNT);
+    } else {
+      return data.slice((page - 1) * PAGINATION_COUNT, page * PAGINATION_COUNT);
+    }
+  }
+
+  const handleNextPage = () => {
+    if (page * PAGINATION_COUNT < userData.length) setPage(page + 1)
+  }
+  
+  const handlePreviousPage = () => {
+    if (page > 1) setPage(page - 1);
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         {loading && <Text>Loading...</Text>}
         {!loading && 
-          (<FlatList
-            data={userData}
-            renderItem={({ item }) => <UserCard user={item} />}
-            keyExtractor={user => user.id}
-            style={styles.flatList}
-            // contentContainerStyle={{gap: 8}}
-            // ItemSeparatorComponent={() => (
-            //   <View style={{ backgroundColor: "green", height: 1 }} />
-            // )}
-          />
+          (
+            <View style={styles.container}>
+              <FlatList
+              data={paginateData(userData, page)}
+              renderItem={({ item }) => <UserCard user={item} />}
+              keyExtractor={user => user.id}
+              style={styles.flatList}
+              // contentContainerStyle={{gap: 8}}
+              // ItemSeparatorComponent={() => (
+                //   <View style={{ backgroundColor: "green", height: 1 }} />
+                // )}
+                />
+              <Footer page={page} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage}/>
+            </View>
           )
         }
-        <Footer page={page} setPage={setPage}/>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -50,6 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    width: "100%",
   },
   flatList: {
     width: '100%',
