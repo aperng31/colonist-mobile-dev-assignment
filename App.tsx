@@ -5,12 +5,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [userData, setUserData] = useState([])
+  const [userData, setUserData] = useState<User[]>([])
   
   useEffect(() => {
     const getUsers = async () => {
       const response = await axios.get('https://6799ee3d747b09cdcccd06bc.mockapi.io/api/v1/users')
       setUserData(response.data);
+      setLoading(false);
     }
 
     getUsers();
@@ -18,7 +19,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      {loading && <Text>Loading...</Text>}
+      {!loading && 
+        <View>
+          {userData.map((user) => {
+            return <Text key={user.id}>{user.userName}</Text>
+          })}
+        </View>
+      }
       <StatusBar style="auto" />
     </View>
   );
@@ -32,3 +40,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+interface User {
+  country: string;
+  createdAt: Date;
+  id: string;
+  userName: string
+}
