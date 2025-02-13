@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import UserCard from './UserCard';
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,11 +22,11 @@ export default function App() {
     <View style={styles.container}>
       {loading && <Text>Loading...</Text>}
       {!loading && 
-        <View>
-          {userData.map((user) => {
-            return <Text key={user.id}>{user.userName}</Text>
-          })}
-        </View>
+        <FlatList
+          data={userData}
+          renderItem={({ item }) => <UserCard user={item} />}
+          keyExtractor={user => user.id}
+        />
       }
       <StatusBar style="auto" />
     </View>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface User {
+export interface User {
   country: string;
   createdAt: Date;
   id: string;
