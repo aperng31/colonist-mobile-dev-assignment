@@ -2,25 +2,19 @@ import React, { useState } from "react"
 import { StyleSheet, View, TouchableOpacity, Pressable, Text } from "react-native"
 import Octicons from 'react-native-vector-icons/Octicons';
 
-const Header = () => {
-  const [sort, setSort] = useState<'NON' | 'ASC' | 'DES'>('NON');
-
-  const getIconName = () => {
-    return sort == 'DES' ? 'sort-desc' : 'sort-asc';
-  }
-
-  const handleSortPress = () => {
-    if (sort == 'NON') setSort('ASC');
-    else if (sort == 'ASC') setSort('DES');
-    else setSort('NON');
-  }
+interface Props {
+  sort: 'NON' | 'ASC' | 'DES';
+  getIconName: () => string;
+  handleSortPress: () => void;
+}
+const Header = ({ sort, getIconName, handleSortPress}: Props) => {
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Users</Text>
       <Pressable
         onPress={handleSortPress}
-        style={styles.pressable}
+        style={[styles.pressable, sort != 'NON' && styles.noSort ]}
       >
         <Octicons name={getIconName()} size={24} />
       </Pressable>
@@ -42,9 +36,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   pressable: {
-    borderWidth: 2,
-    borderColor: 'red',
     padding: 12,
+    borderWidth: 2,
+    borderColor: '#f0f0f0',
+  },
+  noSort: {
+    borderColor: 'gray',
   }
 });
 

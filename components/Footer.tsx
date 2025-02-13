@@ -7,7 +7,7 @@ interface Props {
   handlePreviousPage: () => void;
   handleNextPage: () => void;
 }
-const Footer = ({ page, handlePreviousPage, handleNextPage }) => {
+const Footer = ({ page, handlePreviousPage, handleNextPage }: Props) => {
   // actual footer should fetch total number of elements in order to determine max num of pages
   // each right/left click should refetch, sending back current page so API knows what chunk to return
   
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     borderWidth: 2,
-    borderColor: 'red',
+    borderColor: 'gray',
     padding: 12,
   }
 });
