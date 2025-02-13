@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import UserCard from './UserCard';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -19,17 +20,23 @@ export default function App() {
   }, [])
 
   return (
-    <View style={styles.container}>
-      {loading && <Text>Loading...</Text>}
-      {!loading && 
-        <FlatList
-          data={userData}
-          renderItem={({ item }) => <UserCard user={item} />}
-          keyExtractor={user => user.id}
-        />
-      }
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        {loading && <Text>Loading...</Text>}
+        {!loading && 
+          <FlatList
+            data={userData}
+            renderItem={({ item }) => <UserCard user={item} />}
+            keyExtractor={user => user.id}
+            style={styles.flatList}
+            // contentContainerStyle={{gap: 8}}
+            // ItemSeparatorComponent={() => (
+            //   <View style={{ backgroundColor: "green", height: 1 }} />
+            // )}
+          />
+        }
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -40,6 +47,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  flatList: {
+    width: '100%',
+  }
 });
 
 export interface User {
