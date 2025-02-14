@@ -15,7 +15,7 @@
    ```
 4. Run
    ```sh
-   npm expo start
+   npx expo start
    ```
   - Make sure to have Expo Go installed on your mobile device
 5. Scan the QR code in Expo Go to open the app
